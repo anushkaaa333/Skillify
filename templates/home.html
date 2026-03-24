@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Skillify</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(120deg,#eef2ff,#f9fafe);
+    text-align: center;
+}
+
+/* Container */
+.container {
+    margin-top: 60px;
+}
+
+/* Logo */
+.logo {
+    width: 120px;
+    margin-bottom: 10px;
+}
+
+/* POP Animation */
+@keyframes pop {
+    0% { transform: scale(0.5); opacity: 0; }
+    70% { transform: scale(1.1); }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+/* Title */
+h1 {
+    font-size: 42px;
+    color: #fb88d9;
+    margin: 5px 0;
+    animation: pop 0.8s ease-out;
+}
+
+/* Tagline */
+.tagline {
+    font-size: 20px;
+    font-weight: 500;
+    color: #333;
+}
+
+/* Description */
+.description {
+    width: 60%;
+    margin: auto;
+    color: #d464bc;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+/* Button */
+.btn {
+    margin-top: 30px;
+    padding: 14px 30px;
+    font-size: 16px;
+    color: white;
+    background: linear-gradient(90deg,#617ef1,#e83daf);
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: 0.3s;
+}
+
+.btn:hover {
+    transform: scale(1.05);
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<img class="logo" src="{{ url_for('static', filename='logo.png.jpeg') }}">
+
+<h1>Skillify</h1>
+
+<div class="tagline">
+Learn. Teach. Grow Together.
+</div>
+
+<p class="description">
+Skillify is a student-driven platform where learners connect,
+share knowledge, and exchange skills through peer-to-peer
+collaboration in a trusted environment.
+</p>
+
+<a href="/signup" class="btn">Get Started</a>
+
+</div>
+
+</body>
+</html>

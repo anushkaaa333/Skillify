@@ -1,0 +1,19 @@
+<h2>Available Skills 🚀</h2>
+
+{% for skill in skills %}
+    <div style="margin:10px; padding:10px; border:1px solid black;">
+        
+        <b>{{ skill.skill_name }}</b><br>
+        Mentor: {{ skill.user_email }}
+
+        <form method="POST" action="/request_skill">
+            <input type="hidden" name="mentor" value="{{ skill.user_email }}">
+            <input type="hidden" name="skill" value="{{ skill.skill_name }}">
+            <br>
+            <button>Request</button>
+        </form>
+
+    </div>
+{% endfor %}
+
+<a href="/dashboard_student">Back</a>

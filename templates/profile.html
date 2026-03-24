@@ -1,0 +1,15 @@
+<h2>Your Profile</h2>
+
+<form method="POST">
+    <textarea name="bio" placeholder="Your bio"></textarea><br><br>
+    <input type="text" name="github" placeholder="GitHub link"><br><br>
+    <button>Save</button>
+</form>
+
+{% if data %}
+    <h3>Saved Info:</h3>
+    <p>{{ data.bio }}</p>
+    <p>{{ data.github }}</p>
+{% endif %}
+
+<a href="/dashboard_student">Back</a>
