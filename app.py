@@ -4,169 +4,124 @@ import mysql.connector
 app = Flask(__name__)
 app.secret_key = "skillify_secret"
 
-# ---------------- DATABASE ----------------
+# DATABASE CONNECTION
 db = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    password="anushka333",
-    database="skillify"
+    host="localhost", user="root", password="anushka333", database="skillify"
 )
-
 cursor = db.cursor(dictionary=True)
 
-# ---------------- HOME ----------------
+
+# --- HELPER FUNCTIONS ---
+
+def go_home():
+    """Redirects authenticated users to their correct dashboard."""
+    if session.get("role") == "mentor":
+        return redirect("/dashboard_mentor")
+    return redirect("/dashboard_student")
+
+def render_dashboard():
+    """Renders the appropriate dashboard template safely based on role."""
+    if "email" not in session:
+        return redirect("/login")
+    
+    if session.get("role") == "mentor":
+        return render_template("dashboard_mentor.html", name=session.get("name"))
+    
+    return render_template("dashboard_student.html", name=session.get("name"))
+
+
+# --- ROUTES ---
+
+# Homepage
 @app.route("/")
 def home():
-    return render_template("home.html")
+    if "email" in session:
+        return go_home()
+    return redirect("/login")
 
-# ---------------- SIGNUP ----------------
+
+# Signup
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
     if request.method == "POST":
-        username = request.form["username"]
-        email = request.form["email"]
-        password = request.form["password"]
-        role = request.form["role"]
-
+        data = request.form
         cursor.execute(
             "INSERT INTO users (name, email, password, role) VALUES (%s,%s,%s,%s)",
-            (username, email, password, role)
+            (data["username"], data["email"], data["password"], data["role"])
         )
         db.commit()
-
         return redirect("/login")
-
+    
     return render_template("signup.html")
 
-# ---------------- LOGIN ----------------
+
+# Login
 @app.route("/login", methods=["GET", "POST"])
 def login():
-    if request.method == "POST":
-        email = request.form["email"]
-        password = request.form["password"]
+    if "email" in session:
+        return go_home()
 
-        cursor.execute(
-            "SELECT * FROM users WHERE email=%s AND password=%s",
-            (email, password)
-        )
+    if request.method == "POST":
+        data = request.form
+        cursor.execute("SELECT * FROM users WHERE email=%s AND password=%s", (data["email"], data["password"]))
         user = cursor.fetchone()
 
         if user:
-            session["user"] = user["email"]
+            session["user_id"] = user.get("id", user.get("user_id", ""))
+            session["name"] = user["name"]
+            session["email"] = user["email"]
             session["role"] = user["role"]
-
-            if user["role"] == "student":
-                return redirect("/dashboard_student")
-            else:
-                return redirect("/dashboard_mentor")
-
+            return go_home()
+            
         return "Invalid Login"
 
     return render_template("login.html")
 
-# ---------------- STUDENT DASHBOARD ----------------
+
+# Dashboards (Merged rendering logic for safety)
 @app.route("/dashboard_student")
 def dashboard_student():
-    if "user" in session:
-        return render_template("dashboard_student.html")
-    return redirect("/login")
+    return render_dashboard()
 
-# ---------------- MENTOR DASHBOARD ----------------
 @app.route("/dashboard_mentor")
 def dashboard_mentor():
-    if "user" in session:
-        return render_template("dashboard_mentor.html")
-    return redirect("/login")
+    return render_dashboard()
 
-# ---------------- ADD SKILL ----------------
-@app.route("/add_skill", methods=["POST"])
-def add_skill():
-    skill = request.form["skill"]
-    user = session["user"]
 
-    cursor.execute(
-        "INSERT INTO skills (user_email, skill_name) VALUES (%s,%s)",
-        (user, skill)
-    )
-    db.commit()
+# Browse matching mentors
+@app.route("/browse")
+def browse():
+    if "email" not in session:
+        return redirect("/login")
+    
+    cursor.execute("SELECT * FROM users WHERE role='mentor'")
+    return render_template("browse.html", mentors=cursor.fetchall())
 
-    return redirect("/dashboard_mentor")
 
-# ---------------- SHOW SKILLS ----------------
-@app.route("/browse_skills")
-def browse_skills():
-    cursor.execute("SELECT * FROM skills")
-    skills = cursor.fetchall()
-
-    return render_template("browse_skills.html", skills=skills)
-
-# ---------------- REQUEST SKILL ----------------
-@app.route("/request_skill", methods=["POST"])
-def request_skill():
-    learner = session["user"]
-    mentor = request.form["mentor"]
-    skill = request.form["skill"]
-
-    cursor.execute(
-        "INSERT INTO requests (learner_email, mentor_email, skill_name, status) VALUES (%s,%s,%s,%s)",
-        (learner, mentor, skill, "pending")
-    )
-    db.commit()
-
-    return redirect("/browse_skills")
-
-# ---------------- MENTOR REQUESTS ----------------
-@app.route("/mentor_requests")
-def mentor_requests():
-    user = session["user"]
-
-    cursor.execute(
-        "SELECT * FROM requests WHERE mentor_email=%s",
-        (user,)
-    )
-    data = cursor.fetchall()
-
-    return render_template("mentor_requests.html", data=data)
-
-# ---------------- ACCEPT REQUEST ----------------
-@app.route("/accept_request", methods=["POST"])
-def accept_request():
-    id = request.form["id"]
-
-    cursor.execute(
-        "UPDATE requests SET status='accepted' WHERE id=%s",
-        (id,)
-    )
-    db.commit()
-
-    return redirect("/mentor_requests")
-
-# ---------------- PROFILE ----------------
+# Profile settings
 @app.route("/profile", methods=["GET", "POST"])
 def profile():
-    user = session["user"]
-
+    if "email" not in session:
+        return redirect("/login")
+    
+    user_email = session["email"]
+    
     if request.method == "POST":
-        bio = request.form["bio"]
-        github = request.form["github"]
-
-        cursor.execute(
-            "INSERT INTO profile (email, bio, github) VALUES (%s,%s,%s)",
-            (user, bio, github)
-        )
+        data = request.form
+        cursor.execute("INSERT INTO profile (email, bio, github) VALUES (%s,%s,%s)", (user_email, data["bio"], data["github"]))
         db.commit()
 
-    cursor.execute("SELECT * FROM profile WHERE email=%s", (user,))
-    data = cursor.fetchone()
+    cursor.execute("SELECT * FROM profile WHERE email=%s", (user_email,))
+    return render_template("profile.html", data=cursor.fetchone())
 
-    return render_template("profile.html", data=data)
 
-# ---------------- LOGOUT ----------------
+# System Logout
 @app.route("/logout")
 def logout():
     session.clear()
     return redirect("/login")
 
-# ---------------- RUN ----------------
+
+# Initialize App Setup
 if __name__ == "__main__":
     app.run(debug=True)

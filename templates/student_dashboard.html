@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Dashboard - Skillify</title>
+  <link rel="stylesheet" href="../static/css/styles.css">
+</head>
+<body>
+  
+  <nav class="navbar">
+    <a href="student_dashboard.html" class="nav-brand">Skillify</a>
+    <div class="nav-links">
+      <a href="student_dashboard.html" class="nav-link active">Dashboard</a>
+      <a href="browse.html" class="nav-link">Browse Matches</a>
+    </div>
+    <div class="user-menu">
+      <a href="profile.html" class="nav-link">Profile</a>
+      <a href="login.html" class="btn btn-outline" style="padding: 0.4rem 1rem;">Log Out</a>
+    </div>
+  </nav>
+
+  <div class="dashboard-container">
+    <div class="page-header">
+      <div>
+        <h1>Welcome back, Jane! 👋</h1>
+        <p>You have 2 upcoming sessions this week.</p>
+      </div>
+      <button class="btn btn-primary" onclick="navigateTo('browse.html')">Find a Mentor</button>
+    </div>
+
+    <div class="grid-cols-3">
+      <!-- Main Content (2 columns visually) -->
+      <div style="grid-column: span 2;">
+        <h2 class="mb-2">Upcoming Sessions</h2>
+        <div class="glass-card mb-4 d-flex justify-between align-center">
+          <div class="d-flex align-center gap-2">
+            <div class="avatar" style="background: #10b981;">JS</div>
+            <div>
+              <h3 style="margin-bottom: 0.25rem;">React Fundamentals</h3>
+              <p style="margin: 0; font-size: 0.9rem;">with John Smith</p>
+            </div>
+          </div>
+          <div class="text-right">
+            <div class="badge badge-primary mb-1">Tomorrow, 10:00 AM</div>
+            <button class="btn btn-outline" style="padding: 0.4rem 0.8rem;">Join Link</button>
+          </div>
+        </div>
+
+        <div class="glass-card d-flex justify-between align-center">
+          <div class="d-flex align-center gap-2">
+            <div class="avatar" style="background: #ef4444;">AW</div>
+            <div>
+              <h3 style="margin-bottom: 0.25rem;">UI/UX Design Basics</h3>
+              <p style="margin: 0; font-size: 0.9rem;">with Alice Wright</p>
+            </div>
+          </div>
+          <div class="text-right">
+            <div class="badge badge-secondary mb-1">Friday, 2:00 PM</div>
+            <button class="btn btn-outline" style="padding: 0.4rem 0.8rem;">Join Link</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sidebar -->
+      <div>
+        <div class="glass-panel" style="padding: 1.5rem;">
+          <h2 class="mb-3">My Learning Goals</h2>
+          
+          <div class="mb-3">
+            <div class="d-flex justify-between mb-1" style="font-size: 0.9rem;">
+              <span>Frontend Development</span>
+              <span style="color: var(--secondary);">65%</span>
+            </div>
+            <div style="width: 100%; height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px;">
+              <div style="width: 65%; height: 100%; background: var(--secondary); border-radius: 4px;"></div>
+            </div>
+          </div>
+
+          <div class="mb-4">
+            <div class="d-flex justify-between mb-1" style="font-size: 0.9rem;">
+              <span>Public Speaking</span>
+              <span style="color: var(--primary);">30%</span>
+            </div>
+            <div style="width: 100%; height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px;">
+              <div style="width: 30%; height: 100%; background: var(--primary); border-radius: 4px;"></div>
+            </div>
+          </div>
+
+          <hr>
+          
+          <h3 class="mb-2">Recommended Mentors</h3>
+          <div class="d-flex align-center justify-between mb-2">
+            <div class="d-flex align-center gap-2">
+              <div class="avatar" style="width: 32px; height: 32px; font-size: 0.8rem;">MK</div>
+              <span style="font-size: 0.9rem;">Mike Kane</span>
+            </div>
+            <a href="connection.html" class="nav-link" style="color: var(--secondary); font-size: 0.85rem;">Connect</a>
+          </div>
+          <div class="d-flex align-center justify-between">
+            <div class="d-flex align-center gap-2">
+              <div class="avatar" style="width: 32px; height: 32px; font-size: 0.8rem; background: #eab308;">SL</div>
+              <span style="font-size: 0.9rem;">Sarah Lee</span>
+            </div>
+            <a href="connection.html" class="nav-link" style="color: var(--secondary); font-size: 0.85rem;">Connect</a>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../static/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skillify | Student Dashboard</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar glass">
+        <a href="dashboard_student.html" class="nav-brand text-gradient">Skillify</a>
+        <div class="nav-links">
+            <a href="dashboard_student.html" class="active">Dashboard</a>
+            <a href="profile.html">Profile</a>
+            <a href="login.html" class="btn btn-outline" style="padding: 8px 16px;">Logout</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="dashboard-header fade-in">
+            <div>
+                <h1 class="text-gradient">Welcome back, Student!</h1>
+                <p>Ready to learn something new today?</p>
+            </div>
+            <a href="profile.html" class="btn btn-primary">Edit Profile</a>
+        </div>
+
+        <h2 class="section-title fade-in delay-1">Browse Skills</h2>
+        <div class="dashboard-grid">
+            <!-- Skill Card 1 -->
+            <div class="glass glass-card skill-card-body">
+                <span class="badge">Web Dev</span>
+                <h3>Advanced React.js</h3>
+                <p>Learn React hooks, state management, and routing with Sarah.</p>
+                <div class="skill-meta">
+                    <span style="font-weight: 500;">Mentor: Sarah K.</span>
+                    <button class="btn btn-primary connect-btn" data-skill="Advanced React.js" style="padding: 8px 16px;">Request</button>
+                </div>
+            </div>
+            
+            <!-- Skill Card 2 -->
+            <div class="glass glass-card skill-card-body">
+                <span class="badge blue">Design</span>
+                <h3>UI/UX Masterclass</h3>
+                <p>Improve your design skills using Figma and modern principles.</p>
+                <div class="skill-meta">
+                    <span style="font-weight: 500;">Mentor: Mike T.</span>
+                    <button class="btn btn-primary connect-btn" data-skill="UI/UX Masterclass" style="padding: 8px 16px;">Request</button>
+                </div>
+            </div>
+
+            <!-- Skill Card 3 -->
+            <div class="glass glass-card skill-card-body">
+                <span class="badge">Data</span>
+                <h3>Python for Data Analysis</h3>
+                <p>Pandas, NumPy, and data visualization techniques.</p>
+                <div class="skill-meta">
+                    <span style="font-weight: 500;">Mentor: David L.</span>
+                    <button class="btn btn-primary connect-btn" data-skill="Python for Data Analysis" style="padding: 8px 16px;">Request</button>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="section-title fade-in delay-2">My Learning</h2>
+        <div class="dashboard-grid">
+            <div class="glass glass-card skill-card-body">
+                <span class="badge">Backend</span>
+                <h3>Intro to Node.js</h3>
+                <p>Status: <span style="color: #00C853; font-weight: 600;">Active</span></p>
+                <div class="skill-meta">
+                    <span style="font-weight: 500;">Mentor: James P.</span>
+                    <button class="btn btn-outline" style="padding: 8px 16px;">Message Mentor</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

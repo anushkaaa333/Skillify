@@ -1,91 +1,133 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Student Dashboard</title>
-
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
-
-    <style>
-        body {
-            margin: 0;
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(120deg, #5f7fff, #ff8a7f);
-            color: white;
-        }
-
-        .container {
-            padding: 40px;
-            text-align: center;
-        }
-
-        h1 {
-            font-size: 32px;
-        }
-
-        .card-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 20px;
-            margin-top: 40px;
-        }
-
-        .card {
-            background: white;
-            color: black;
-            padding: 25px;
-            border-radius: 15px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-        }
-
-        .logout {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            padding: 10px;
-            background: red;
-            color: white;
-            border: none;
-            border-radius: 8px;
-        }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skillify | Student Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
-
 <body>
+    <!-- Top Navigation -->
+    <nav class="nav">
+        <a href="/dashboard_student" class="nav-brand">Skillify</a>
+        <div class="nav-links">
+            <a href="/dashboard_student" class="active">Dashboard</a>
+            <a href="/browse">Browse</a>
+            <a href="/profile">Profile</a>
+            <a href="/logout" class="btn-outline">Logout</a>
+        </div>
+    </nav>
 
-<a href="/logout">
-    <button class="logout">Logout</button>
-</a>
-
-<div class="container">
-    <h1>Welcome to Skillify 🚀</h1>
-
-    <div class="card-container">
-
-        <!-- Browse Skills -->
-        <div class="card" onclick="window.location.href='/browse_skills'">
-            <h3>Browse Skills</h3>
-            <p>Find mentors</p>
+    <!-- Main Content Area -->
+    <div class="container">
+        
+        <!-- Welcome Banner Section -->
+        <div class="card flex-between mb-4">
+            <div class="flex items-center gap-4">
+                <div class="avatar">{{ session['name'][0]|upper if session['name'] else 'S' }}</div>
+                <div>
+                    <h1 class="color-primary m-0">Welcome, {{ session['name'] }}</h1>
+                    <p class="m-0">Ready to learn something new today?</p>
+                </div>
+            </div>
+            <a href="/browse" class="btn btn-accent w-auto">Browse Skills</a>
         </div>
 
-        <!-- My Learning -->
-        <div class="card">
-            <h3>My Learning</h3>
-            <p>Your progress</p>
+        <!-- Progress Tracking Section -->
+        <h2>My Progress Tracker</h2>
+        <div class="grid mb-4">
+            <div class="card">
+                <div class="flex-between mb-1">
+                    <span class="font-bold">Python Basics Course</span>
+                    <span class="color-primary font-bold">70%</span>
+                </div>
+                <div class="w-full bg-border radius-md overflow-hidden mb-2" style="height: 12px; background-color: var(--border);">
+                    <div style="width: 70%; background-color: var(--primary); height: 100%; border-radius: 8px;"></div>
+                </div>
+                <p class="m-0 text-sm">You are almost there!</p>
+            </div>
+
+            <div class="card flex items-center gap-4">
+                <div class="avatar secondary large m-0">📊</div>
+                <div>
+                    <h3 class="m-0">Sessions Attended</h3>
+                    <p class="m-0 font-bold">You attended 4 sessions total</p>
+                </div>
+            </div>
         </div>
 
-        <!-- Profile -->
-        <div class="card" onclick="window.location.href='/profile'">
-            <h3>Profile</h3>
-            <p>Your info</p>
+        <!-- Active Mentor Requests Section -->
+        <h2>My Mentorship Requests</h2>
+        <div class="grid mb-4">
+            <div class="card">
+                <span class="badge">Pending</span>
+                <h3 class="mt-1">Advanced React.js</h3>
+                <p>Requested Mentor: <strong>alex@skillify.com</strong></p>
+                <div class="mt-2">
+                    <button class="btn btn-outline processing w-full">Awaiting Approval</button>
+                </div>
+            </div>
+            
+            <div class="card">
+                <span class="badge accent">Accepted</span>
+                <h3 class="mt-1">Python For Beginners</h3>
+                <p>Mentor: <strong>david@skillify.com</strong></p>
+                <div class="flex gap-3 mt-2">
+                    <button class="btn w-full" onclick="showToast('Opening chat...')">Message</button>
+                    <button class="btn btn-outline w-full" onclick="showToast('Rating submitted! ⭐⭐⭐⭐⭐')">Rate 5 ⭐</button>
+                </div>
+            </div>
         </div>
 
+        <!-- Certificates Proof Section -->
+        <h2>Certificates Earned</h2>
+        <div class="grid mb-4">
+            <div class="card flex items-center gap-4">
+                <div class="avatar primary large m-0">🎓</div>
+                <div>
+                    <h3 class="m-0 mb-1">Python Basics</h3>
+                    <p class="m-0 text-sm">Issued: March 2026</p>
+                </div>
+            </div>
+            
+            <div class="card flex items-center gap-4">
+                <div class="avatar primary large m-0">🎓</div>
+                <div>
+                    <h3 class="m-0 mb-1">Web Dev Intro</h3>
+                    <p class="m-0 text-sm">Issued: Feb 2026</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Video Library Section -->
+        <h2>Learning Videos</h2>
+        <div class="grid mb-4">
+            <div class="card overflow-hidden" style="padding: 0;">
+                <div class="flex items-center" style="height: 140px; background: linear-gradient(135deg, #1f2937, #4b5563); justify-content: center;">
+                    <span style="font-size: 40px; opacity: 0.8;">▶️</span>
+                </div>
+                <div style="padding: 16px;">
+                    <h3 class="text-md mb-1">React in 100 Seconds</h3>
+                    <button class="btn btn-outline w-full p-2" onclick="showToast('Opening player...')">Watch Video</button>
+                </div>
+            </div>
+            
+            <div class="card overflow-hidden" style="padding: 0;">
+                <div class="flex items-center" style="height: 140px; background: linear-gradient(135deg, #14b8a6, #0d9488); justify-content: center;">
+                    <span style="font-size: 40px; opacity: 0.8;">▶️</span>
+                </div>
+                <div style="padding: 16px;">
+                    <h3 class="text-md mb-1">UI/UX Fundamentals</h3>
+                    <button class="btn btn-outline w-full p-2" onclick="showToast('Opening player...')">Watch Video</button>
+                </div>
+            </div>
+        </div>
+        
     </div>
-</div>
+    
+    <!-- App Footer -->
+    <footer>&copy; Skillify | Built by Student</footer>
 
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
 </html>

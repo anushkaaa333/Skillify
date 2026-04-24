@@ -1,15 +1,61 @@
-<h2>Your Profile</h2>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skillify | My Profile</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <!-- Top Navigation -->
+    <nav class="nav">
+        <a href="/" class="nav-brand">Skillify</a>
+        <div class="nav-links">
+            <a href="/dashboard_student">Dashboard</a>
+            <a href="/profile" class="active">Profile</a>
+            <a href="/logout" class="btn-outline">Logout</a>
+        </div>
+    </nav>
 
-<form method="POST">
-    <textarea name="bio" placeholder="Your bio"></textarea><br><br>
-    <input type="text" name="github" placeholder="GitHub link"><br><br>
-    <button>Save</button>
-</form>
+    <!-- Main Content Area -->
+    <div class="auth-wrapper" style="align-items: flex-start; padding-top: 40px;">
+        <div class="card auth-card">
+            
+            <div class="text-center mb-3">
+                <div class="avatar large m-0 primary">{{ session.get('name', 'User')[0]|upper }}</div>
+                <h1 class="color-primary m-0 mt-2">Your Profile</h1>
+                <p>Manage your account settings below.</p>
+            </div>
+            
+            <form method="POST" action="/profile" onsubmit="sessionStorage.setItem('toastMessage', 'Profile saved successfully!');">
+                <div class="form-group">
+                    <label>Full Name (Read-Only)</label>
+                    <input type="text" name="name" value="{{ session.get('name', 'User') }}" readonly style="background-color: #f8fafc;">
+                </div>
+                
+                <div class="form-group">
+                    <label>Email (Read-Only)</label>
+                    <input type="email" name="email" value="{{ session.get('email', '') }}" readonly style="background-color: #f8fafc;">
+                </div>
+                
+                <div class="form-group">
+                    <label>GitHub URL</label>
+                    <input type="text" name="github" placeholder="https://github.com/..." value="{{ data['github'] if data else '' }}">
+                </div>
+                
+                <div class="form-group">
+                    <label>Short Bio</label>
+                    <textarea name="bio" rows="4" placeholder="Tell us about yourself...">{{ data['bio'] if data else '' }}</textarea>
+                </div>
+                
+                <button type="submit" class="btn">Save Changes</button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- App Footer -->
+    <footer>&copy; Skillify | Built by Student</footer>
 
-{% if data %}
-    <h3>Saved Info:</h3>
-    <p>{{ data.bio }}</p>
-    <p>{{ data.github }}</p>
-{% endif %}
-
-<a href="/dashboard_student">Back</a>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

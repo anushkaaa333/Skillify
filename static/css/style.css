@@ -1,0 +1,237 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+
+/* Base Colors and Theme */
+:root {
+    --bg-main: #ffffff;
+    --text-dark: #1f2937;
+    --primary: #4f46e5;
+    --secondary: #6366f1;
+    --accent: #14b8a6;
+    --border: #e2e8f0;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #f8fafc, #eef2ff);
+    color: var(--text-dark);
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Base Layout Classes */
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 24px;
+    flex: 1;
+}
+
+.card {
+    background-color: var(--bg-main);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08);
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+}
+
+@media (max-width: 600px) {
+    .grid { grid-template-columns: 1fr; }
+}
+
+/* Helper Utilities (Replaces Inline Styles) */
+.flex { display: flex; }
+.flex-between { display: flex; justify-content: space-between; align-items: center; }
+.items-center { align-items: center; }
+.gap-2 { gap: 8px; }
+.gap-3 { gap: 12px; }
+.gap-4 { gap: 16px; }
+
+.m-0 { margin: 0; }
+.mb-1 { margin-bottom: 8px; }
+.mb-2 { margin-bottom: 16px; }
+.mb-3 { margin-bottom: 24px; }
+.mb-4 { margin-bottom: 32px; }
+
+.w-full { width: 100%; }
+.w-auto { width: auto; }
+.text-center { text-align: center; }
+.text-sm { font-size: 0.9rem; }
+.text-md { font-size: 1.1rem; }
+.text-lg { font-size: 1.5rem; font-weight: 600; letter-spacing: -0.01em; }
+.font-bold { font-weight: 600; }
+
+.color-primary { color: var(--primary); }
+.border-dash { border: 2px dashed #cbd5e1; }
+.overflow-hidden { overflow: hidden; }
+
+/* Navigation */
+.nav {
+    background-color: var(--bg-main);
+    padding: 16px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.nav-brand {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--primary);
+    text-decoration: none;
+}
+
+.nav-links {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #4b5563;
+    font-weight: 500;
+    padding: 6px 12px;
+    border-radius: 6px;
+    transition: all 0.2s;
+}
+
+.nav-links a:hover, .nav-links a.active {
+    color: var(--text-dark);
+    background-color: #f8fafc;
+}
+.nav-links a.active {
+    color: var(--primary);
+    background-color: #eef2ff;
+}
+
+/* Forms Elements */
+.form-group { margin-bottom: 20px; }
+label { display: block; margin-bottom: 8px; font-weight: 500; font-size: 0.95rem; }
+
+input, select, textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    outline: none;
+    background-color: var(--bg-main);
+}
+input:focus, select:focus, textarea:focus { border-color: var(--secondary); }
+input:valid { border-left: 3px solid var(--accent); }
+input:invalid:not(:placeholder-shown) { border-left: 3px solid #ef4444; }
+
+/* Buttons */
+.btn {
+    display: inline-block;
+    padding: 12px 24px;
+    background-color: var(--primary);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    width: 100%;
+}
+
+.btn:hover {
+    background-color: var(--secondary);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.25);
+}
+
+.btn.processing {
+    background-color: #9ca3af;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.btn-outline {
+    background-color: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-dark);
+}
+.btn-outline:hover { background-color: #f8fafc; }
+
+.btn-accent { background-color: var(--accent); }
+.btn-accent:hover { background-color: #0d9488; }
+
+/* Avatars & Badges */
+.avatar {
+    width: 50px;
+    height: 50px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background-color: var(--accent);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+.avatar.large { width: 80px; height: 80px; font-size: 2rem; margin: 0 auto 16px; }
+.avatar.primary { background-color: var(--primary); }
+.avatar.secondary { background-color: var(--secondary); }
+
+.badge {
+    display: inline-block;
+    padding: 4px 12px;
+    background-color: #eef2ff;
+    color: var(--primary);
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    margin-bottom: 12px;
+}
+.badge.accent { background-color: var(--accent); color: white; }
+
+/* Special Layouts */
+.auth-wrapper { flex: 1; display: flex; justify-content: center; align-items: center; padding: 40px 24px; }
+.auth-card { width: 100%; max-width: 400px; }
+
+.empty-state { text-align: center; padding: 40px; color: #6b7280; font-style: italic; }
+
+.modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(2px); }
+
+/* Toasts */
+.toast-container { position: fixed; bottom: 24px; right: 24px; z-index: 1000; }
+.toast {
+    background-color: var(--text-dark);
+    color: #ffffff;
+    padding: 12px 24px;
+    border-radius: 8px;
+    margin-top: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    opacity: 0;
+    animation: fadeIn 0.3s forwards, fadeOut 0.3s 2.7s forwards;
+}
+
+/* Footer */
+footer { text-align: center; padding: 24px; font-size: 0.875rem; color: #6b7280; }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeOut { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(10px); } }

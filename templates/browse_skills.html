@@ -1,19 +1,91 @@
-<h2>Available Skills 🚀</h2>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skillify | Browse Skills 🚀</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav class="navbar glass fade-in">
+        <a href="/dashboard_student" class="nav-brand text-gradient">Skillify ✨</a>
+        <div class="nav-links">
+            <a href="/dashboard_student">Dashboard</a>
+            <a href="/profile">Profile</a>
+            <a href="/logout" class="btn btn-outline" style="padding: 8px 16px;">Logout 💫</a>
+        </div>
+    </nav>
 
-{% for skill in skills %}
-    <div style="margin:10px; padding:10px; border:1px solid black;">
-        
-        <b>{{ skill.skill_name }}</b><br>
-        Mentor: {{ skill.user_email }}
+    <div class="container">
+        <div class="dashboard-header fade-in">
+            <div>
+                <h1 class="text-gradient">Available Skills 🚀</h1>
+                <p>Find your next mentor and level up your skills!</p>
+            </div>
+            <a href="/dashboard_student" class="btn btn-outline">Back to Dashboard</a>
+        </div>
 
-        <form method="POST" action="/request_skill">
-            <input type="hidden" name="mentor" value="{{ skill.user_email }}">
-            <input type="hidden" name="skill" value="{{ skill.skill_name }}">
-            <br>
-            <button>Request</button>
-        </form>
+        <div class="dashboard-grid fade-in delay-1">
+            {% if skills %}
+                {% for skill in skills %}
+                <div class="glass glass-card skill-card-body">
+                    <span class="badge blue">Skill</span>
+                    <h3>{{ skill.skill_name }}</h3>
+                    <p>Mentor: <strong>{{ skill.user_email }}</strong></p>
+                    
+                    <div class="skill-meta">
+                        <form method="POST" action="/request_skill" class="request-form" style="width: 100%;">
+                            <input type="hidden" name="mentor" value="{{ skill.user_email }}">
+                            <input type="hidden" name="skill" value="{{ skill.skill_name }}">
+                            <button type="submit" class="btn btn-primary" style="width: 100%;">Request 🚀</button>
+                        </form>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <!-- Static Demo Data for visually working UI -->
+                <div class="glass glass-card skill-card-body">
+                    <span class="badge">Web Dev</span>
+                    <h3>React.js Fundamentals</h3>
+                    <p>Mentor: <strong>alex@skillify.com</strong></p>
+                    <div class="skill-meta">
+                        <form method="POST" action="/request_skill" class="request-form" style="width: 100%;">
+                            <input type="hidden" name="mentor" value="alex@skillify.com">
+                            <input type="hidden" name="skill" value="React.js Fundamentals">
+                            <button type="submit" class="btn btn-primary" style="width: 100%;">Request 🚀</button>
+                        </form>
+                    </div>
+                </div>
 
+                <div class="glass glass-card skill-card-body">
+                    <span class="badge blue">Design</span>
+                    <h3>UI/UX Masterclass</h3>
+                    <p>Mentor: <strong>sarah@skillify.com</strong></p>
+                    <div class="skill-meta">
+                        <form method="POST" action="/request_skill" class="request-form" style="width: 100%;">
+                            <input type="hidden" name="mentor" value="sarah@skillify.com">
+                            <input type="hidden" name="skill" value="UI/UX Masterclass">
+                            <button type="submit" class="btn btn-primary" style="width: 100%;">Request 🚀</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="glass glass-card skill-card-body">
+                    <span class="badge">Data</span>
+                    <h3>Python Basics</h3>
+                    <p>Mentor: <strong>david@skillify.com</strong></p>
+                    <div class="skill-meta">
+                        <form method="POST" action="/request_skill" class="request-form" style="width: 100%;">
+                            <input type="hidden" name="mentor" value="david@skillify.com">
+                            <input type="hidden" name="skill" value="Python Basics">
+                            <button type="submit" class="btn btn-primary" style="width: 100%;">Request 🚀</button>
+                        </form>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
     </div>
-{% endfor %}
 
-<a href="/dashboard_student">Back</a>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

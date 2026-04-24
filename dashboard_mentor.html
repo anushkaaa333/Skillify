@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skillify | Mentor Dashboard</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar glass">
+        <a href="dashboard_mentor.html" class="nav-brand text-gradient">Skillify <span style="font-size: 1rem; color: var(--primary); font-weight: 600;">(Mentor)</span></a>
+        <div class="nav-links">
+            <a href="dashboard_mentor.html" class="active">Dashboard</a>
+            <a href="profile.html">Profile</a>
+            <a href="login.html" class="btn btn-outline" style="padding: 8px 16px;">Logout</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="dashboard-header fade-in">
+            <div>
+                <h1 class="text-gradient">Welcome back, Mentor!</h1>
+                <p>Manage your skill offerings and student requests.</p>
+            </div>
+            <button id="addSkillBtn" class="btn btn-primary">Add New Skill</button>
+        </div>
+
+        <h2 class="section-title fade-in delay-1">Student Requests</h2>
+        <div class="dashboard-grid">
+            <!-- Request Card 1 -->
+            <div class="glass glass-card skill-card-body">
+                <span class="badge blue">New Request</span>
+                <h3>Alex Johnson</h3>
+                <p>Wants to learn: <strong>Advanced React.js</strong></p>
+                <p style="font-size: 0.9em; margin-bottom: 16px;">"Hi, I really want to master React context and custom hooks. Looking forward to your guidance!"</p>
+                <div style="display: flex; gap: 12px; margin-top: auto;">
+                    <button class="btn btn-primary req-action-btn" data-action="accept" data-name="Alex" style="flex: 1; padding: 10px;">Accept</button>
+                    <button class="btn btn-outline req-action-btn" data-action="reject" data-name="Alex" style="flex: 1; padding: 10px; border-color: #F44336; color: #F44336;">Decline</button>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="section-title fade-in delay-2">My Offered Skills</h2>
+        <div class="dashboard-grid">
+            <div class="glass glass-card skill-card-body">
+                <span class="badge">Web Dev</span>
+                <h3>Advanced React.js</h3>
+                <p>Active Students: 2</p>
+                <div class="skill-meta">
+                    <button class="btn btn-outline" style="padding: 8px 16px; width: 100%;">Edit Offering</button>
+                </div>
+            </div>
+            <div class="glass glass-card skill-card-body">
+                <span class="badge">Web Dev</span>
+                <h3>Frontend Architecture</h3>
+                <p>Active Students: 0</p>
+                <div class="skill-meta">
+                    <button class="btn btn-outline" style="padding: 8px 16px; width: 100%;">Edit Offering</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Skill Modal -->
+    <div class="modal-overlay" id="skillModal">
+        <div class="modal-content glass-card">
+            <div class="modal-header">
+                <h2 class="text-gradient" style="margin: 0;">Add New Skill</h2>
+                <button class="close-btn">&times;</button>
+            </div>
+            <form id="skillForm" method="POST" action="/add_skill">
+                <div class="form-group">
+                    <label for="skill_name">Skill Name</label>
+                    <input type="text" id="skill_name" name="skill_name" placeholder="E.g., CSS Animations Mastery" required>
+                </div>
+                <div class="form-group">
+                    <label for="category">Category</label>
+                    <select id="category" name="category" required>
+                        <option value="" disabled selected>Select category</option>
+                        <option value="web">Web Development</option>
+                        <option value="data">Data Science</option>
+                        <option value="design">Design</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="skill_desc">Description</label>
+                    <textarea id="skill_desc" name="skill_desc" rows="3" placeholder="What will students learn?" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Publish Skill</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
