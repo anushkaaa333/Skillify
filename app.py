@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, session
 import mysql.connector
+from werkzeug.security import generate_password_hash, check_password_hash # ADDED FOR SECURITY
 
 app = Flask(__name__)
 app.secret_key = "skillify_secret"
@@ -24,10 +25,21 @@ def render_dashboard():
     if "email" not in session:
         return redirect("/login")
     
-    if session.get("role") == "mentor":
-        return render_template("dashboard_mentor.html", name=session.get("name"))
+    user_email = session.get("email") # FIX: Use email instead of id
+    role = session.get("role")
     
-    return render_template("dashboard_student.html", name=session.get("name"))
+    # FETCH REQUESTS BASED ON ROLE
+    if role == "mentor":
+        # FIX: Database uses 'mentor_email' instead of 'mentor_id'
+        cursor.execute("SELECT * FROM requests WHERE mentor_email=%s", (user_email,))
+        requests_data = cursor.fetchall()
+        return render_template("dashboard_mentor.html", name=session.get("name"), requests=requests_data)
+    
+    # For student
+    # FIX: Database uses 'learner_email' instead of 'student_id'
+    cursor.execute("SELECT * FROM requests WHERE learner_email=%s", (user_email,))
+    requests_data = cursor.fetchall()
+    return render_template("dashboard_student.html", name=session.get("name"), requests=requests_data)
 
 
 # --- ROUTES ---
@@ -45,9 +57,10 @@ def home():
 def signup():
     if request.method == "POST":
         data = request.form
+        hashed_pw = generate_password_hash(data["password"]) # HASH PASSWORD
         cursor.execute(
             "INSERT INTO users (name, email, password, role) VALUES (%s,%s,%s,%s)",
-            (data["username"], data["email"], data["password"], data["role"])
+            (data["username"], data["email"], hashed_pw, data["role"]) # SAVE HASHED
         )
         db.commit()
         return redirect("/login")
@@ -63,10 +76,11 @@ def login():
 
     if request.method == "POST":
         data = request.form
-        cursor.execute("SELECT * FROM users WHERE email=%s AND password=%s", (data["email"], data["password"]))
+        cursor.execute("SELECT * FROM users WHERE email=%s", (data["email"],)) # FETCH BY EMAIL ONLY
         user = cursor.fetchone()
 
-        if user:
+        # VERIFY HASHED PASSWORD
+        if user and check_password_hash(user["password"], data["password"]):
             session["user_id"] = user.get("id", user.get("user_id", ""))
             session["name"] = user["name"]
             session["email"] = user["email"]
@@ -76,6 +90,25 @@ def login():
         return "Invalid Login"
 
     return render_template("login.html")
+
+
+# Forgot Password
+@app.route("/forgot_password", methods=["GET", "POST"])
+def forgot_password():
+    if request.method == "POST":
+        email = request.form["email"]
+        new_password = request.form["new_password"]
+        
+        # Check if email exists
+        cursor.execute("SELECT * FROM users WHERE email=%s", (email,))
+        if cursor.fetchone():
+            hashed_pw = generate_password_hash(new_password) # Hash new password
+            cursor.execute("UPDATE users SET password=%s WHERE email=%s", (hashed_pw, email))
+            db.commit()
+            return redirect("/login")
+        return "Email not found"
+        
+    return render_template("forgot_password.html")
 
 
 # Dashboards (Merged rendering logic for safety)
